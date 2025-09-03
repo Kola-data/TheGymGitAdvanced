@@ -1,0 +1,163 @@
+1. Create a New Git Repository:
+
+    Head over to GitHub and create a new repository. Clone this repository to your local machine.
+
+        kwola@kwola:~/TheGymProjects$ git clone https://github.com/Kola-data/TheGymGitAdvanced.git
+        Cloning into 'TheGymGitAdvanced'...
+        warning: You appear to have cloned an empty repository.
+
+2.  Initialize Your Environment:
+
+    Open a terminal window and navigate to your cloned repository directory.
+    Run the following commands to create some dummy files and commit them:
+    touch test{1..4}.md
+    git add test1.md && git commit -m "chore: Create initial file"
+    git add test2.md && git commit -m "chore: Create another file"
+    git add test3.md && git commit -m "chore: Create third and fourth files"
+
+        kwola@kwola:~/TheGymProjects$ cd TheGymGitAdvanced
+        kwola@kwola:~/TheGymProjects/TheGymGitAdvanced$ git init
+        Reinitialized existing Git repository in /home/kwola/TheGymProjects/TheGymGitAdvanced/.git/
+        kwola@kwola:~/TheGymProjects/TheGymGitAdvanced$ touch test{1..4}.md
+        git add test1.md && git commit -m "chore: Create initial file"
+        git add test2.md && git commit -m "chore: Create another file"
+        git add test3.md && git commit -m "chore: Create third and fourth files"
+        [main (root-commit) 7bb5687] chore: Create initial file
+        1 file changed, 0 insertions(+), 0 deletions(-)
+        create mode 100644 test1.md
+        [main f7b58b0] chore: Create another file
+        1 file changed, 0 insertions(+), 0 deletions(-)
+        create mode 100644 test2.md
+        [main 3a487d1] chore: Create third and fourth files
+        1 file changed, 0 insertions(+), 0 deletions(-)
+        create mode 100644 test3.md
+
+
+Part 1: Refining Git History (10 Challenges)
+
+    1. Missing File Fix:
+
+        Run git status and git log to assess the current state of your repository.
+        From the status you will see that you forgot to add test4.md in the last commit.
+        Challenge: Recover from this error by staging/adding test4.md and amending the commit message with an appropriate description.
+
+
+            kwola@kwola:~/TheGymProjects/TheGymGitAdvanced$ git status
+            On branch main
+            Your branch is based on 'origin/main', but the upstream is gone.
+            (use "git branch --unset-upstream" to fixup)
+
+            Untracked files:
+            (use "git add <file>..." to include in what will be committed)
+                test4.md
+
+            nothing added to commit but untracked files present (use "git add" to track)
+            kwola@kwola:~/TheGymProjects/TheGymGitAdvanced$ git log -oneline
+            fatal: unrecognized argument: -oneline
+            kwola@kwola:~/TheGymProjects/TheGymGitAdvanced$ git log --oneline
+            3a487d1 (HEAD -> main) chore: Create third and fourth files
+            f7b58b0 chore: Create another file
+            7bb5687 chore: Create initial file
+            kwola@kwola:~/TheGymProjects/TheGymGitAdvanced$ git add test4.md
+            kwola@kwola:~/TheGymProjects/TheGymGitAdvanced$     git commit --amend
+            [main a9ae676] chore: Create test files 3 and 4
+            Date: Wed Sep 3 11:23:00 2025 +0200
+            2 files changed, 0 insertions(+), 0 deletions(-)
+            create mode 100644 test3.md
+            create mode 100644 test4.md
+            kwola@kwola:~/TheGymProjects/TheGymGitAdvanced$ git status
+            On branch main
+            Your branch is based on 'origin/main', but the upstream is gone.
+            (use "git branch --unset-upstream" to fixup)
+
+            nothing to commit, working tree clean
+            kwola@kwola:~/TheGymProjects/TheGymGitAdvanced$ git log --oneline
+            a9ae676 (HEAD -> main) chore: Create test files 3 and 4
+            f7b58b0 chore: Create another file
+            7bb5687 chore: Create initial file
+
+
+        2.Editing Commit History:
+
+            It's crucial to maintain accurate commit messages. Modify the message from "Create another file" to "Create second file".
+            Challenge: Utilize interactive rebasing (git rebase -i HEAD~2) to edit the commit message and ensure clarity. learn more about git rebase here
+
+
+                kwola@kwola:~/TheGymProjects/TheGymGitAdvanced$ git log --oneline
+                a9ae676 (HEAD -> main) chore: Create test files 3 and 4
+                f7b58b0 chore: Create another file
+                7bb5687 chore: Create initial file
+                kwola@kwola:~/TheGymProjects/TheGymGitAdvanced$ git rebase main
+                Current branch main is up to date.
+                kwola@kwola:~/TheGymProjects/TheGymGitAdvanced$ git log
+                commit a9ae676f1f7c6201e4c706492bb20a67047d4667 (HEAD -> main)
+                Author: Emmanuel Rutayisire <dreamwave610@gmail.com>
+                Date:   Wed Sep 3 11:23:00 2025 +0200
+
+                    chore: Create test files 3 and 4
+
+                commit f7b58b0dcc587b9004e72adde69947ec5856ce73
+                Author: Emmanuel Rutayisire <dreamwave610@gmail.com>
+                Date:   Wed Sep 3 11:23:00 2025 +0200
+
+                    chore: Create another file
+
+                commit 7bb5687ba961cd357cd3a03bbc0ef4ecc1b6aae4
+                Author: Emmanuel Rutayisire <dreamwave610@gmail.com>
+                Date:   Wed Sep 3 11:23:00 2025 +0200
+
+                    chore: Create initial file
+                kwola@kwola:~/TheGymProjects/TheGymGitAdvanced$ git log --oneline --graph
+                * a9ae676 (HEAD -> main) chore: Create test files 3 and 4
+                * f7b58b0 chore: Create another file
+                * 7bb5687 chore: Create initial file
+                kwola@kwola:~/TheGymProjects/TheGymGitAdvanced$ git reflog
+                a9ae676 (HEAD -> main) HEAD@{0}: rebase (finish): returning to refs/heads/main
+                a9ae676 (HEAD -> main) HEAD@{1}: rebase (start): checkout f7b58b0
+                a9ae676 (HEAD -> main) HEAD@{2}: commit (amend): chore: Create test files 3 and 4
+                3a487d1 HEAD@{3}: commit: chore: Create third and fourth files
+                f7b58b0 HEAD@{4}: commit: chore: Create another file
+                7bb5687 HEAD@{5}: commit (initial): chore: Create initial file
+                kwola@kwola:~/TheGymProjects/TheGymGitAdvanced$ git show a9ae676
+                commit a9ae676f1f7c6201e4c706492bb20a67047d4667 (HEAD -> main)
+                Author: Emmanuel Rutayisire <dreamwave610@gmail.com>
+                Date:   Wed Sep 3 11:23:00 2025 +0200
+
+                    chore: Create test files 3 and 4
+
+                diff --git a/test3.md b/test3.md
+                new file mode 100644
+                index 0000000..e69de29
+                diff --git a/test4.md b/test4.md
+                new file mode 100644
+                index 0000000..e69de29
+                kwola@kwola:~/TheGymProjects/TheGymGitAdvanced$ git show f7b58b0
+                commit f7b58b0dcc587b9004e72adde69947ec5856ce73
+                Author: Emmanuel Rutayisire <dreamwave610@gmail.com>
+                Date:   Wed Sep 3 11:23:00 2025 +0200
+
+                    chore: Create another file
+
+                diff --git a/test2.md b/test2.md
+                new file mode 100644
+                index 0000000..e69de29
+                kwola@kwola:~/TheGymProjects/TheGymGitAdvanced$ git rebase -i f7b58b0dcc587b9004e72adde69947ec5856ce73
+                [detached HEAD ad02fbe] chore: Create test all files 3 and 4
+                Date: Wed Sep 3 11:23:00 2025 +0200
+                2 files changed, 0 insertions(+), 0 deletions(-)
+                create mode 100644 test3.md
+                create mode 100644 test4.md
+                Successfully rebased and updated refs/heads/main.
+                kwola@kwola:~/TheGymProjects/TheGymGitAdvanced$ git rebase -i f7b58b0dcc587b9004e72adde69947ec5856ce73
+                Successfully rebased and updated refs/heads/main.
+                kwola@kwola:~/TheGymProjects/TheGymGitAdvanced$ git log --oneline
+                ad02fbe (HEAD -> main) chore: Create test all files 3 and 4
+                f7b58b0 chore: Create another file
+                7bb5687 chore: Create initial file
+                kwola@kwola:~/TheGymProjects/TheGymGitAdvanced$ 
+
+
+
+
+
+    
